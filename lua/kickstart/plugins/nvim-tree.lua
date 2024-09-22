@@ -9,6 +9,10 @@ return {
         adaptive_size = true,
     },
     config = function()
-      require("nvim-tree").setup {}
+      require("nvim-tree").setup {
+	view = {
+	  adaptive_size = true,
+	},
+      }
     end,
   }
