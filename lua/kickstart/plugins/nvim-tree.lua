@@ -5,13 +5,11 @@ return {
   dependencies = {
     'nvim-tree/nvim-web-devicons',
   },
-  view = {
-    adaptive_size = true,
-  },
   config = function()
     require('nvim-tree').setup {
       view = {
         adaptive_size = true,
+        side = 'right',
       },
       filters = {
         custom = {
