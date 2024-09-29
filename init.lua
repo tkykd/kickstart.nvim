@@ -96,12 +96,12 @@ vim.g.loaded_netrwPlugin = 1
 
 -- use `nvim-treesitter` as truth sourcing of folding
 vim.opt.foldmethod = 'expr'
-vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 vim.opt.foldcolumn = '0'
-vim.opt.foldtext = '0'
-vim.opt.foldlevel = 99
-vim.opt.foldlevelstart = 1
-vim.opt.foldnestmax = 4
+-- vim.opt.foldtext = '0'
+vim.opt.foldlevel = 1000
+-- vim.opt.foldlevelstart = 1
+-- vim.opt.foldnestmax = 4
 
 -- optionally enable 24-bit colour
 vim.opt.termguicolors = true
