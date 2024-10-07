@@ -853,7 +853,7 @@ require('lazy').setup({
           dim_inactive = true,
         },
       }
-      vim.cmd 'colorscheme github_dark_default'
+      vim.cmd 'colorscheme github_dark_dimmed'
     end,
   },
 
