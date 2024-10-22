@@ -176,6 +176,8 @@ vim.opt.scrolloff = 10
 
 vim.opt.colorcolumn = '79'
 
+vim.api.nvim_exec2('language en_US', {})
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -281,7 +283,7 @@ require('lazy').setup({
         virt_text_priority = 100,
         use_focus = true,
       },
-      current_line_blame_formatter = '<author>, <author_time:%R> - <summary>',
+      current_line_blame_formatter = '<author>, <author_time:%Y/%b/%d> - <summary>',
     },
   },
 
