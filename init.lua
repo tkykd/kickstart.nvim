@@ -237,6 +237,15 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
+-- [[ Helper Fuctions ]]
+local function lualine_filename_path()
+  if vim.o.columns > 79 then
+    return 1
+  else
+    return 0
+  end
+end
+
 -- [[ Configure and install plugins ]]
 --
 --  To check the current status of your plugins, run
@@ -991,24 +1000,21 @@ require('lazy').setup({
         sections = {
           lualine_a = { 'mode' },
           lualine_b = { 'branch', 'diff', 'diagnostics' },
-          lualine_c = {},
-          lualine_x = { 'encoding', { 'fileformat', icons_enabled = false }, 'filetype' },
-          lualine_y = {},
+          lualine_c = { { 'filename', file_status = true, path = lualine_filename_path() } },
+          lualine_x = {},
+          lualine_y = { 'encoding', { 'fileformat', icons_enabled = false } },
           lualine_z = { 'location' },
         },
         inactive_sections = {
           lualine_a = {},
           lualine_b = {},
-          lualine_c = { 'filename' },
-          lualine_x = { 'location' },
+          lualine_c = {},
+          lualine_x = {},
           lualine_y = {},
           lualine_z = {},
         },
         tabline = {},
         winbar = {
-          lualine_b = {
-            { 'filename', file_status = true, path = 1 },
-          },
           lualine_c = {
             {
               function()
