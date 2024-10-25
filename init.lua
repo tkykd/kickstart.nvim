@@ -957,6 +957,25 @@ require('lazy').setup({
     end,
   },
   {
+    'nvim-treesitter/nvim-treesitter-context',
+    config = function()
+      require('treesitter-context').setup {
+        enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+        max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
+        min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+        line_numbers = true,
+        multiline_threshold = 3, -- Maximum number of lines to show for a single context
+        trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+        mode = 'cursor', -- Line used to calculate context. Choices: 'cursor', 'topline'
+        -- Separator between context and content. Should be a single character string, like '-'.
+        -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
+        separator = nil,
+        zindex = 20, -- The Z-index of the context window
+        on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
+      }
+    end,
+  },
+  {
     'kdheepak/lazygit.nvim',
     cmd = {
       'LazyGit',
@@ -982,8 +1001,10 @@ require('lazy').setup({
         options = {
           icons_enabled = true,
           theme = 'auto',
-          component_separators = { left = '', right = '' },
-          section_separators = { left = '', right = '' },
+          --component_separators = { left = '', right = '' },
+          --section_separators = { left = '', right = '' },
+          component_separators = '',
+          section_separators = '',
           disabled_filetypes = {
             statusline = {},
             winbar = {},
@@ -999,10 +1020,16 @@ require('lazy').setup({
         },
         sections = {
           lualine_a = { 'mode' },
-          lualine_b = { 'branch', 'diff', 'diagnostics' },
-          lualine_c = { { 'filename', file_status = true, path = lualine_filename_path() } },
+          lualine_b = { 'branch', 'diagnostics' },
+          lualine_c = {
+            { 'filetype', colored = true, icon_only = true },
+            { 'filename', file_status = true, path = lualine_filename_path() },
+          },
           lualine_x = {},
-          lualine_y = { 'encoding', { 'fileformat', icons_enabled = false } },
+          lualine_y = {
+            'encoding',
+            { 'fileformat', icons_enabled = false },
+          },
           lualine_z = { 'location' },
         },
         inactive_sections = {
@@ -1015,14 +1042,19 @@ require('lazy').setup({
         },
         tabline = {},
         winbar = {
-          lualine_c = {
-            {
+          lualine_b = {
+            --[[ 
+            --Now it seems that `nvim-treesitter-context` sticky scroll
+            --is a better alternative for code context
+            --{
               function()
                 return require('nvim-treesitter').statusline {
                   type_patterns = { 'class', 'function', 'method' },
                 }
               end,
             },
+            ]]
+            --
           },
         },
         inactive_winbar = {},
