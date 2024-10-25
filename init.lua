@@ -237,15 +237,6 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
--- [[ Helper Fuctions ]]
-local function lualine_filename_path()
-  if vim.o.columns > 79 then
-    return 1
-  else
-    return 0
-  end
-end
-
 -- [[ Configure and install plugins ]]
 --
 --  To check the current status of your plugins, run
@@ -997,6 +988,22 @@ require('lazy').setup({
   {
     'nvim-lualine/lualine.nvim',
     config = function()
+      ---@param width_rest number rest of width for other components
+      --- return function that can format the component accordingly
+      local function trunc(width_rest)
+        return function(str)
+          local width_win = vim.fn.winwidth(0)
+          local width_filename = string.len(vim.fn.expand '%:t')
+          local width_max = (width_win - width_filename - width_rest)
+          if width_max < 4 then
+            return nil
+          elseif #str <= width_max then
+            return str
+          else
+            return str:sub(1, width_max - 3) .. '...'
+          end
+        end
+      end
       require('lualine').setup {
         options = {
           icons_enabled = true,
@@ -1020,43 +1027,21 @@ require('lazy').setup({
         },
         sections = {
           lualine_a = { 'mode' },
-          lualine_b = { 'branch', 'diagnostics' },
+          lualine_b = {
+            { 'branch', fmt = trunc(60) },
+            'diagnostics',
+          },
           lualine_c = {
             { 'filetype', colored = true, icon_only = true },
-            { 'filename', file_status = true, path = lualine_filename_path() },
+            { 'filename', file_status = false, fmt = trunc(40) },
           },
           lualine_x = {},
-          lualine_y = {
-            'encoding',
-            { 'fileformat', icons_enabled = false },
-          },
+          lualine_y = { 'encoding' },
           lualine_z = { 'location' },
         },
-        inactive_sections = {
-          lualine_a = {},
-          lualine_b = {},
-          lualine_c = {},
-          lualine_x = {},
-          lualine_y = {},
-          lualine_z = {},
-        },
+        inactive_sections = {},
         tabline = {},
-        winbar = {
-          lualine_b = {
-            --[[ 
-            --Now it seems that `nvim-treesitter-context` sticky scroll
-            --is a better alternative for code context
-            --{
-              function()
-                return require('nvim-treesitter').statusline {
-                  type_patterns = { 'class', 'function', 'method' },
-                }
-              end,
-            },
-            ]]
-            --
-          },
-        },
+        winbar = {},
         inactive_winbar = {},
         extensions = {},
       }
