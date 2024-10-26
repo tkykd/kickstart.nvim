@@ -955,7 +955,6 @@ require('lazy').setup({
         max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
         min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
         line_numbers = true,
-        multiline_threshold = 3, -- Maximum number of lines to show for a single context
         trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
         mode = 'cursor', -- Line used to calculate context. Choices: 'cursor', 'topline'
         -- Separator between context and content. Should be a single character string, like '-'.
@@ -988,20 +987,25 @@ require('lazy').setup({
   {
     'nvim-lualine/lualine.nvim',
     config = function()
-      ---@param width_rest number rest of width for other components
+      --- @param trunc_width number trunctates component when screen width is less then trunc_width
+      --- @param trunc_len number truncates component to trunc_len number of chars
+      --- @param hide_width number hides component when window width is smaller then hide_width
+      --- @param no_ellipsis boolean whether to disable adding '...' at end after truncation
+      --- @param left_aligned boolean yes (left-aligned) or no (right-aligned)
       --- return function that can format the component accordingly
-      local function trunc(width_rest)
+      local function trunc(trunc_width, trunc_len, hide_width, no_ellipsis, left_aligned)
         return function(str)
-          local width_win = vim.fn.winwidth(0)
-          local width_filename = string.len(vim.fn.expand '%:t')
-          local width_max = (width_win - width_filename - width_rest)
-          if width_max < 4 then
-            return nil
-          elseif #str <= width_max then
-            return str
-          else
-            return str:sub(1, width_max - 3) .. '...'
+          local win_width = vim.fn.winwidth(0)
+          if hide_width and win_width < hide_width then
+            return ''
+          elseif trunc_width and trunc_len and win_width < trunc_width and #str > trunc_len then
+            if left_aligned then
+              return str:sub(1, trunc_len) .. (no_ellipsis and '' or '...')
+            else
+              return (no_ellipsis and '' or '...') .. str:sub(#str - trunc_len + 1, #str)
+            end
           end
+          return str
         end
       end
       require('lualine').setup {
@@ -1028,18 +1032,23 @@ require('lazy').setup({
         sections = {
           lualine_a = { 'mode' },
           lualine_b = {
-            { 'branch', fmt = trunc(60) },
+            { 'branch', fmt = trunc(120, 20, 20, false, true) },
             'diagnostics',
           },
           lualine_c = {
             { 'filetype', colored = true, icon_only = true },
-            { 'filename', file_status = false, fmt = trunc(40) },
+            { 'filename', path = 1, file_status = false, fmt = trunc(120, 20, 20, false, false) },
           },
           lualine_x = {},
           lualine_y = { 'encoding' },
           lualine_z = { 'location' },
         },
-        inactive_sections = {},
+        inactive_sections = {
+          lualine_c = {
+            { 'filetype', colored = true, icon_only = true },
+            { 'filename', path = 1, file_status = false, fmt = trunc(120, 79, 79, false, false) },
+          },
+        },
         tabline = {},
         winbar = {},
         inactive_winbar = {},
