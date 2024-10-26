@@ -176,6 +176,9 @@ vim.opt.scrolloff = 10
 
 vim.opt.colorcolumn = '79'
 
+-- Flag passed to the shell to execute "!" and ":!" commands
+vim.opt.shellcmdflag = '-c'
+
 vim.api.nvim_exec2('language en_US', {})
 
 -- [[ Basic Keymaps ]]
@@ -967,6 +970,7 @@ require('lazy').setup({
   },
   {
     'kdheepak/lazygit.nvim',
+    lazy = false,
     cmd = {
       'LazyGit',
       'LazyGitConfig',
