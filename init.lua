@@ -1036,26 +1036,35 @@ require('lazy').setup({
         sections = {
           lualine_a = { 'mode' },
           lualine_b = {
-            { 'branch', fmt = trunc(120, 20, 20, false, true) },
+            { 'branch', fmt = trunc(120, 20, 79, false, true) },
             'diagnostics',
           },
-          lualine_c = {
-            { 'filetype', colored = true, icon_only = true },
-            { 'filename', path = 1, file_status = false, fmt = trunc(120, 20, 20, false, false) },
-          },
+          lualine_c = {},
           lualine_x = {},
-          lualine_y = { 'encoding' },
-          lualine_z = { 'location' },
+          lualine_y = {},
+          lualine_z = { 'encoding', 'location' },
         },
         inactive_sections = {
-          lualine_c = {
-            { 'filetype', colored = true, icon_only = true },
-            { 'filename', path = 1, file_status = false, fmt = trunc(120, 79, 79, false, false) },
-          },
+          lualine_a = {},
+          lualine_b = {},
+          lualine_c = {},
+          lualine_x = {},
+          lualine_y = {},
+          lualine_z = {},
         },
         tabline = {},
-        winbar = {},
-        inactive_winbar = {},
+        winbar = {
+          lualine_b = {
+            { 'filetype', colored = true, icon_only = false },
+            { 'filename', path = 1, file_status = false, fmt = trunc(120, 72, 72, false, false) },
+          },
+        },
+        inactive_winbar = {
+          lualine_b = {
+            { 'filetype', colored = true, icon_only = false },
+            { 'filename', path = 1, file_status = false, fmt = trunc(120, 72, 72, false, false) },
+          },
+        },
         extensions = {},
       }
     end,
