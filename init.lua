@@ -875,7 +875,35 @@ require('lazy').setup({
   },
 
   -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+  {
+    'folke/todo-comments.nvim',
+    event = 'VimEnter',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    opts = {
+      signs = false,
+      keywords = {
+        FIX = {
+          color = 'error', -- can be a hex color, or a named color (see below)
+          alt = { 'FIXME', 'BUG', 'FIXIT', 'ISSUE' }, -- a set of other keywords that all map to this FIX keywords
+          -- signs = false, -- configure signs for some keywords individually
+        },
+        TODO = { color = 'info' },
+        HACK = { color = 'warning' },
+        WARN = { color = 'warning', alt = { 'WARNING', 'XXX' } },
+        PERF = { alt = { 'OPTIM', 'PERFORMANCE', 'OPTIMIZE' } },
+        NOTE = { color = 'hint', alt = { 'INFO' } },
+        TEST = { color = 'test', alt = { 'TESTING', 'PASSED', 'FAILED' } },
+      },
+    },
+    colors = {
+      error = { 'DiagnosticError', 'ErrorMsg', '#DC2626' },
+      warning = { 'DiagnosticWarn', 'WarningMsg', '#FBBF24' },
+      info = { 'DiagnosticInfo', '#2563EB' },
+      hint = { 'DiagnosticHint', '#10B981' },
+      default = { 'Identifier', '#7C3AED' },
+      test = { 'Identifier', '#FF00FF' },
+    },
+  },
 
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
