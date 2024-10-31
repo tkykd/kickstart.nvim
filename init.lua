@@ -1105,6 +1105,9 @@ require('lazy').setup({
 
       require('outline').setup {
         -- Your setup opts here (leave empty to use defaults)
+        outline_window = {
+          position = 'left',
+        },
       }
     end,
   }, -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
