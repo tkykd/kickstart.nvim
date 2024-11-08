@@ -1082,14 +1082,18 @@ require('lazy').setup({
         },
         tabline = {},
         winbar = {
-          lualine_b = {
+          lualine_a = {
             { 'filetype', colored = true, icon_only = false },
+          },
+          lualine_b = {
             { 'filename', path = 1, file_status = false, fmt = trunc(120, 72, 72, false, false) },
           },
         },
         inactive_winbar = {
-          lualine_b = {
+          lualine_a = {
             { 'filetype', colored = true, icon_only = false },
+          },
+          lualine_b = {
             { 'filename', path = 1, file_status = false, fmt = trunc(120, 72, 72, false, false) },
           },
         },
