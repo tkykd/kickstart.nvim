@@ -1110,7 +1110,9 @@ require('lazy').setup({
       require('outline').setup {
         -- Your setup opts here (leave empty to use defaults)
         outline_window = {
-          position = 'left',
+          position = 'right',
+          -- `position` will not be considered if `split_command` is non-nil.
+          split_command = nil,
         },
       }
     end,
