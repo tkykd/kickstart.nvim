@@ -17,6 +17,9 @@ return {
           '__pycache__',
         },
       },
+      update_focused_file = {
+        enable = true,
+      },
     }
   end,
 }
