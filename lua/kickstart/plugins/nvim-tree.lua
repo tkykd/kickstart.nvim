@@ -5,6 +5,7 @@ return {
   dependencies = {
     'nvim-tree/nvim-web-devicons',
   },
+  vim.keymap.set('n', '<leader>e', '<cmd>NvimTreeToggle<CR>', { desc = 'Open or close the tree' }),
   config = function()
     require('nvim-tree').setup {
       view = {
