@@ -8,6 +8,9 @@ return {
   vim.keymap.set('n', '<leader>e', '<cmd>NvimTreeToggle<CR>', { desc = 'Open or close the tree' }),
   config = function()
     require('nvim-tree').setup {
+      git = {
+        enable = false,
+      },
       view = {
         adaptive_size = true,
       },
